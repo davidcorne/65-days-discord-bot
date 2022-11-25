@@ -10,8 +10,7 @@ import {
 import { VerifyDiscordRequest, getRandomEmoji, DiscordRequest } from './utils.js';
 import { getShuffledOptions, getResult } from './game.js';
 import {
-  CHALLENGE_COMMAND,
-  TEST_COMMAND,
+  PLAY_COMMAND,
   HasGuildCommands,
 } from './commands.js';
 
@@ -29,6 +28,7 @@ const activeGames = {};
  * Interactions endpoint URL where Discord will send HTTP requests
  */
 app.post('/interactions', async function (req, res) {
+  console.log(req, res)
   // Interaction type and data
   const { type, id, data } = req.body;
 
@@ -46,8 +46,8 @@ app.post('/interactions', async function (req, res) {
   if (type === InteractionType.APPLICATION_COMMAND) {
     const { name } = data;
 
-    // "test" guild command
-    if (name === 'test') {
+    // "play" guild command
+    if (name === 'play') {
       // Send a message into the channel where command was triggered from
       return res.send({
         type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
@@ -180,7 +180,6 @@ app.listen(PORT, () => {
 
   // Check if guild commands from commands.js are installed (if not, install them)
   HasGuildCommands(process.env.APP_ID, process.env.GUILD_ID, [
-    TEST_COMMAND,
-    CHALLENGE_COMMAND,
+    PLAY_COMMAND,
   ]);
 });
